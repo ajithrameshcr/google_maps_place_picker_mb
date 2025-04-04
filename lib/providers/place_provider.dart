@@ -42,53 +42,8 @@ class PlaceProvider extends ChangeNotifier {
   bool isAutoCompleteSearching = false;
 
   Future<void> updateCurrentLocation({bool gracefully = false}) async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
-      if (gracefully) {
-        // Or you can swallow the issue and respect the user's privacy
-        return;
-      }
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
-        if (gracefully) {
-          // Or you can swallow the issue and respect the user's privacy
-          return;
-        }
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
-      if (gracefully) {
-        // Or you can swallow the issue and respect the user's privacy
-        return;
-      }
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    _currentPosition = await Geolocator.getCurrentPosition(
-      desiredAccuracy: desiredAccuracy ?? LocationAccuracy.best,
-    );
-  }
+  return; // Completely skip location updates to prevent permission requests
+}
 
   Position? _currentPosition;
   Position? get currentPosition => _currentPosition;
