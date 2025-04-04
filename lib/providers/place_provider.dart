@@ -42,16 +42,7 @@ class PlaceProvider extends ChangeNotifier {
   bool isAutoCompleteSearching = false;
 
 Future<void> updateCurrentLocation({bool gracefully = false}) async {
-  bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    if (gracefully) return;
-    return Future.error('Location services are disabled.');
-  }
-
-  // Directly fetch location if the app has permission
-  _currentPosition = await Geolocator.getCurrentPosition(
-    desiredAccuracy: desiredAccuracy ?? LocationAccuracy.best,
-  );
+  return; // Completely skip location updates to prevent permission requests
 }
 
   Position? _currentPosition;
